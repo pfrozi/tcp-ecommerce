@@ -13,6 +13,7 @@
 #define DIAS_UTEIS 7
 #define MAX_COMPRAS_SUSP 50
 
+//teste para ver o se SVN atualiza.
 
 typedef struct
 {
@@ -281,7 +282,6 @@ void novoUsuario()
      }
 }
 //FIM DA FUNÇÃO PARA CRIAR NOVO USUARIO
-
 
 void inserirProdutoCarrinho(int cadastro)
 {

@@ -1,4 +1,4 @@
-#include "C:\Users\aluno\Desktop\Etapa1\conio2.h"
+#include <Conio2.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,7 +13,6 @@
 #define DIAS_UTEIS 7
 #define MAX_COMPRAS_SUSP 50
 
-//teste para ver o se SVN atualiza.
 
 typedef struct
 {
@@ -67,7 +66,7 @@ typedef struct
 }VENDA;
 
 
-typedef enum (Colors_BLUE = 9, Colors_GREEN = 10, Colors_RED = 12, Colors_YELLOW = 14, Colors_WHITE = 15) Colors;
+typedef enum {Colors_BLUE = 9, Colors_GREEN = 10, Colors_RED = 12, Colors_YELLOW = 14, Colors_WHITE = 15} Colors;
 
 void mudaCor (Colors cor){
     textcolor(cor);

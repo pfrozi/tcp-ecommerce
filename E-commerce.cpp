@@ -288,8 +288,9 @@ void inserirProdutoCarrinho(int cadastro)
      ELETRO eletronico;
      VESTUARIO vestuario;
      CARRINHO carrinho;
-     char cadastroEmChar[MAX_DIGITOS], string[MAX_LINHA], salvaLinha[MAX_PRODUTOS][MAX_LINHA];
-     int codigo, achou=0, quantidade, contalinha=0, i, comparaCodigo, confirmacao;
+     char cadastroEmChar[MAX_DIGITOS], stringTemp[MAX_LINHA], salvaLinha[MAX_PRODUTOS][MAX_LINHA];
+     int codigoProduto, quantidadeProduto, codigoCompara, contalinha=0, i;
+     bool achouProduto=false, carrinhoDisponivel;
 
      system("cls");
      mudaCor(Colors_YELLOW);printf("\nINSERIR NOVO ITEM NO CARRINHO DE COMPRAS");
@@ -298,18 +299,18 @@ void inserirProdutoCarrinho(int cadastro)
      do
      {
              mudaCor(Colors_GREEN);
-             scanf("%d", &codigo);
+             scanf("%d", &codigoProduto);
              mudaCor(Colors_WHITE);
              printf("Digite a quantidade do produto que voce quer adicionar ao seu carrinho: ");
              do
              {
                  mudaCor(Colors_GREEN);
-                 scanf("%d", &quantidade);
-                 if(quantidade<=0 || MAX_CAR<quantidade)
+                 scanf("%d", &quantidadeProduto);
+                 if(quantidadeProduto<=0 || MAX_CAR<quantidadeProduto)
                  {
                      mudaCor(Colors_RED);printf("Quantidade muito grande. Informe uma quantidade de no maximo %d itens: ", MAX_CAR);
                  }
-             }while(quantidade<=0 || MAX_CAR<quantidade);
+             }while(quantidadeProduto<=0 || MAX_CAR<quantidadeProduto);
              mudaCor(Colors_WHITE);
              //abre o arquivo de eletrodomesticos para procurar o codigo
              arq=fopen("eletro.txt", "r+");
@@ -321,14 +322,14 @@ void inserirProdutoCarrinho(int cadastro)
                  getch();
                  exit(1);
              }
-             while((!feof(arq)) && (achou==0))
+             while((!feof(arq)) && (achouProduto==false))
              {
-                 fgets(string, sizeof(string), arq);
-                 comparaCodigo=atoi(strtok(string, ","));
-                 if(codigo==comparaCodigo)
+                 fgets(stringTemp, sizeof(stringTemp), arq);
+                 codigoCompara=atoi(strtok(stringTemp, ","));
+                 if(codigoProduto==codigoCompara)
                  {
-                      achou=1;
-                      eletronico.codigo=codigo;
+                      achouProduto=true;
+                      eletronico.codigo=codigoProduto;
                       strcpy(eletronico.descricao, strtok(NULL, ","));
                       eletronico.altura=atoi(strtok(NULL, ","));
                       eletronico.largura=atoi(strtok(NULL, ","));
@@ -346,12 +347,12 @@ void inserirProdutoCarrinho(int cadastro)
              }
              fclose(arq);
 
-             if(achou==1)
+             if(achouProduto==true)
              {
-                      if(quantidade<=eletronico.estoque)
+                      if(quantidadeProduto<=eletronico.estoque)
                       {
                                //abre o arquivo de carrinho para salvar
-                                confirmacao=1;
+                                carrinhoDisponivel=true;
                                 itoa(cadastro, cadastroEmChar, 10); //converte o codigo para char
                                 arq=fopen(cadastroEmChar, "rb");
                                 if(!arq)
@@ -360,41 +361,41 @@ void inserirProdutoCarrinho(int cadastro)
                                 }
                                 if(fread(&carrinho, sizeof(CARRINHO), 1, arq)==1)
                                 {
-                                          if(carrinho.itensEletro+quantidade<=MAX_CAR)
+                                          if(carrinho.itensEletro+quantidadeProduto<=MAX_CAR)
                                           {
-                                               for(i=carrinho.itensEletro; i<(carrinho.itensEletro+quantidade); i++)
+                                               for(i=carrinho.itensEletro; i<(carrinho.itensEletro+quantidadeProduto); i++)
                                                {
                                                     carrinho.eletronico[i]=eletronico;
                                                }
-                                               carrinho.itensEletro+=quantidade;
+                                               carrinho.itensEletro+=quantidadeProduto;
                                           }
                                           else
                                           {
                                               mudaCor(Colors_RED);printf("\nSeu carrinho de eletrodomesticos ja esta cheio.");
                                               mudaCor(Colors_WHITE);fflush(stdin);getch();
-                                              confirmacao=0;
+                                              carrinhoDisponivel=false;
                                           }
                                 }
                                 else
                                 {
                                     carrinho.itensEletro=0;
-                                    if(carrinho.itensEletro+quantidade<=MAX_CAR)
+                                    if(carrinho.itensEletro+quantidadeProduto<=MAX_CAR)
                                     {
-                                           for(i=carrinho.itensEletro; i<(carrinho.itensEletro+quantidade); i++)
+                                           for(i=carrinho.itensEletro; i<(carrinho.itensEletro+quantidadeProduto); i++)
                                            {
                                                 carrinho.eletronico[i]=eletronico;
                                            }
-                                           carrinho.itensEletro+=quantidade;
+                                           carrinho.itensEletro+=quantidadeProduto;
                                     }
                                     else
                                     {
                                         mudaCor(Colors_RED);printf("\nSeu carrinho de eletrodomesticos ja esta cheio.");
                                         mudaCor(Colors_WHITE);fflush(stdin);getch();
-                                        confirmacao=0;
+                                        carrinhoDisponivel=false;
                                     }
                                 }
                                 fclose(arq);
-                                if(confirmacao==1)  //ha espaco no carrinho
+                                if(carrinhoDisponivel==true)  //ha espaco no carrinho
                                 {
                                     arq=fopen(cadastroEmChar, "wb");
                                     if(!arq)
@@ -441,12 +442,12 @@ void inserirProdutoCarrinho(int cadastro)
                                             getch();
                                             exit(1);
                                     }
-                                    eletronico.estoque=eletronico.estoque-quantidade;
+                                    eletronico.estoque=eletronico.estoque-quantidadeProduto;
                                     for(i=0; i<contalinha; i++)
                                     {
-                                        strcpy(string, salvaLinha[i]);
-                                        comparaCodigo=atoi(strtok(string, ","));
-                                        if(comparaCodigo!=codigo)
+                                        strcpy(stringTemp, salvaLinha[i]);
+                                        codigoCompara=atoi(strtok(stringTemp, ","));
+                                        if(codigoCompara!=codigoProduto)
                                         {
                                            fputs(salvaLinha[i], arq);
                                         }
@@ -477,14 +478,14 @@ void inserirProdutoCarrinho(int cadastro)
                          getch();
                          exit(1);
                      }
-                     while((!feof(arq)) && (achou==0))
+                     while((!feof(arq)) && (achouProduto==false))
                      {
-                         fgets(string, sizeof(string), arq);
-                         comparaCodigo=atoi(strtok(string, ","));
-                         if(codigo==comparaCodigo)
+                         fgets(stringTemp, sizeof(stringTemp), arq);
+                         codigoCompara=atoi(strtok(stringTemp, ","));
+                         if(codigoProduto==codigoCompara)
                          {
-                              achou=1;
-                              vestuario.codigo=codigo;
+                              achouProduto=true;
+                              vestuario.codigo=codigoProduto;
                               strcpy(vestuario.descricao, strtok(NULL, ","));
                               strcpy(vestuario.tamanho, strtok(NULL, ","));
                               vestuario.preco=atof(strtok(NULL, ","));
@@ -501,11 +502,11 @@ void inserirProdutoCarrinho(int cadastro)
                      }
                      fclose(arq);
                      //confere se achou nos vestuarios
-                     if(achou==1)
+                     if(achouProduto==true)
                      {
-                              if(quantidade<=vestuario.estoque)
+                              if(quantidadeProduto<=vestuario.estoque)
                               {
-                                        confirmacao=1;
+                                        carrinhoDisponivel=true;
                                         itoa(cadastro, cadastroEmChar, 10); //converte o codigo para char
                                         arq=fopen(cadastroEmChar, "rb");
                                         if(!arq)
@@ -514,41 +515,41 @@ void inserirProdutoCarrinho(int cadastro)
                                         }
                                         if(fread(&carrinho, sizeof(CARRINHO), 1, arq)==1)
                                         {
-                                                  if(carrinho.itensVestuario+quantidade<=MAX_CAR)
+                                                  if(carrinho.itensVestuario+quantidadeProduto<=MAX_CAR)
                                                   {
-                                                       for(i=carrinho.itensVestuario; i<(carrinho.itensVestuario+quantidade); i++)
+                                                       for(i=carrinho.itensVestuario; i<(carrinho.itensVestuario+quantidadeProduto); i++)
                                                        {
                                                             carrinho.vestuario[i]=vestuario;
                                                        }
-                                                       carrinho.itensVestuario+=quantidade;
+                                                       carrinho.itensVestuario+=quantidadeProduto;
                                                   }
                                                   else
                                                   {
                                                       mudaCor(Colors_RED);printf("\nSeu carrinho de vestuario ja esta cheio.");
                                                       mudaCor(Colors_WHITE);fflush(stdin);getch();
-                                                      confirmacao=0;
+                                                      carrinhoDisponivel=false;
                                                   }
                                         }
                                         else
                                         {
                                             carrinho.itensVestuario=0;
-                                            if(carrinho.itensVestuario+quantidade<=MAX_CAR)
+                                            if(carrinho.itensVestuario+quantidadeProduto<=MAX_CAR)
                                             {
-                                                   for(i=carrinho.itensVestuario; i<(carrinho.itensVestuario+quantidade); i++)
+                                                   for(i=carrinho.itensVestuario; i<(carrinho.itensVestuario+quantidadeProduto); i++)
                                                    {
                                                         carrinho.vestuario[i]=vestuario;
                                                    }
-                                                   carrinho.itensVestuario+=quantidade;
+                                                   carrinho.itensVestuario+=quantidadeProduto;
                                             }
                                             else
                                             {
                                                 mudaCor(Colors_RED);printf("\nSeu carrinho de vestuario ja esta cheio.");
                                                 mudaCor(Colors_WHITE);fflush(stdin);getch();
-                                                confirmacao=0;
+                                                carrinhoDisponivel=false;
                                             }
                                         }
                                         fclose(arq);
-                                        if(confirmacao==1)  //ha espaco no carrinho
+                                        if(carrinhoDisponivel==true)  //ha espaco no carrinho
                                         {
                                             arq=fopen(cadastroEmChar, "wb");
                                             if(!arq)
@@ -595,12 +596,12 @@ void inserirProdutoCarrinho(int cadastro)
                                                     getch();
                                                     exit(1);
                                             }
-                                            vestuario.estoque=vestuario.estoque-quantidade;
+                                            vestuario.estoque=vestuario.estoque-quantidadeProduto;
                                             for(i=0; i<contalinha; i++)
                                             {
-                                                strcpy(string, salvaLinha[i]);
-                                                comparaCodigo=atoi(strtok(string, ","));
-                                                if(comparaCodigo!=codigo)
+                                                strcpy(stringTemp, salvaLinha[i]);
+                                                codigoCompara=atoi(strtok(stringTemp, ","));
+                                                if(codigoCompara!=codigoProduto)
                                                 {
                                                    fputs(salvaLinha[i], arq);
                                                 }
@@ -621,11 +622,11 @@ void inserirProdutoCarrinho(int cadastro)
                               }
                      }
              }
-             if(achou==0)
+             if(achouProduto==false)
              {
                  mudaCor(Colors_RED);printf("Codigo buscado nao encontrado, por favor digite um codigo valido.");
              }
-     }while(achou==0);
+     }while(achouProduto==false);
 }
 
 

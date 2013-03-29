@@ -1852,7 +1852,7 @@ void verificaEstoque()
 void clientesCadastrados()
 {
       FILE *arq;
-      char string[MAX_LINHA];
+      char stringTemp[MAX_LINHA];
 
       system("cls");
       mudaCor(Colors_YELLOW);printf("\nCLIENTES CADASTRADOS:");
@@ -1865,9 +1865,9 @@ void clientesCadastrados()
       }
       while(!feof(arq))
       {
-          fgets(string, sizeof(string), arq);
+          fgets(stringTemp, sizeof(stringTemp), arq);
           printf("\n===========================================");
-          printf("\nCodigo: ");mudaCor(Colors_GREEN);printf("%s", strtok(string, ","));
+          printf("\nCodigo: ");mudaCor(Colors_GREEN);printf("%s", strtok(stringTemp, ","));
           mudaCor(Colors_WHITE);
           printf("\nNome: ");mudaCor(Colors_GREEN);printf("%s", strtok(NULL, ","));
           mudaCor(Colors_WHITE);
@@ -1879,8 +1879,8 @@ void clientesCadastrados()
 
 void menuGERENTE(char nome[], int cadastro)
 {
-    char resposta;               //resposta caracter informada pelo usuario
-    int respostaalg=0;           //resposta devolvida pela funcao
+    char opcaoMenuGerente;               //resposta caracter informada pelo usuario
+    int respostaMenuGerente=0;           //resposta devolvida pela funcao
 
     do
     {
@@ -1903,62 +1903,63 @@ void menuGERENTE(char nome[], int cadastro)
         {
             mudaCor(Colors_GREEN);
             fflush(stdin);
-            scanf("%c", &resposta);
-            resposta=toupper(resposta);
+            scanf("%c", &opcaoMenuGerente);
+            resposta=toupper(opcaoMenuGerente);
             mudaCor(Colors_WHITE);
-            switch(resposta)
+            switch(opcaoMenuGerente)
             {
                 case 'T':
-                {    respostaalg=10;
+                {    respostaMenuGerente=10;
                      break;
                 }
                 case 'P':
                 {
                      pesquisar();
-                     respostaalg=1;
+                     respostaMenuGerente=1;
                      break;
                 }
                 case 'C':
                 {
                      relatorioComprasEmAndamento();
-                     respostaalg=1;
+                     respostaMenuGerente=1;
                      break;
                 }
                 case 'V':
                 {
                      vendas();
-                     respostaalg=1;
+                     respostaMenuGerente=1;
                      break;
                 }
                 case 'E':
                 {
                      verificaEstoque();
-                     respostaalg=1;
+                     respostaMenuGerente=1;
                      break;
                 }
                 case 'L':
                 {
                      clientesCadastrados();
-                     respostaalg=1;
+                     respostaMenuGerente=1;
                      break;
                 }
                 default:
                 {
                    mudaCor(Colors_RED);
                    printf("Opcao invalida. Por favor digite uma opcao valida: ");
-                   respostaalg=0;
+                   respostaMenuGerente=0;
                 }
             }
-         }while(respostaalg==0);
-    }while(respostaalg!=10);
+         }while(respostaMenuGerente==0);
+    }while(respostaMenuGerente!=10);
 }
 
 //INICIO DA TELA DE LOGIN
 void telaLogin()
 {
     FILE *arq;
-    int cadastro, i, comparacadastro, achou=0, GouC;
-    char string[MAX_LINHA], tipoCliente[TAM_NOME_MAX], nome[TAM_NOME_MAX];
+    int codCadastro, codComparaCadastro, verificaEntreClienteGerente;
+    bool achouCadastro=false;
+    char stringTemp[MAX_LINHA], tipoCliente[TAM_NOME_MAX], nomeCliente[TAM_NOME_MAX];
     system("cls");
     mudaCor(Colors_YELLOW);
     printf("\nLOGIN");
@@ -1968,7 +1969,7 @@ void telaLogin()
     do
     {
             mudaCor(Colors_GREEN);
-            scanf("%d", &cadastro);
+            scanf("%d", &codCadastro);
             mudaCor(Colors_WHITE);
             arq=fopen("usuarios.txt", "r");
             if(!arq)
@@ -1979,25 +1980,25 @@ void telaLogin()
                     getch();
                     exit(1);
             }
-            while(!feof(arq) && achou==0)
+            while(!feof(arq) && achouCadastro==false)
             {
-                 fgets(string, sizeof(string), arq);
-                 comparacadastro=atoi(strtok(string, ","));
-                 if(cadastro==comparacadastro)
+                 fgets(stringTemp, sizeof(stringTemp), arq);
+                 codComparaCadastro=atoi(strtok(stringTemp, ","));
+                 if(codCadastro==codComparaCadastro)
                  {
-                     strcpy(nome, strtok(NULL, ","));
+                     strcpy(nomeCliente, strtok(NULL, ","));
                      strcpy(tipoCliente, (strtok(NULL, "\n")));
-                     achou=1;
+                     achouCadastro=true;
                  }
             }
             fclose(arq);
-            if(achou==1)
+            if(achouCadastro==true)
             {
-                GouC=strcmp("gerente", tipoCliente);
-                if(GouC==0)
-                   menuGERENTE(nome, cadastro);
+                verificaEntreClienteGerente=strcmp("gerente", tipoCliente);
+                if(verificaEntreClienteGerente==0)
+                   menuGERENTE(nomeCliente, codCadastro);
                 else
-                   menuCLIENTE(nome, cadastro);
+                   menuCLIENTE(nomeCliente, codCadastro);
             }
             else
             {
@@ -2006,7 +2007,7 @@ void telaLogin()
                 mudaCor(Colors_YELLOW);
                 getch();
             }
-    }while(achou==0);
+    }while(achouCadastro==false);
 }
 //FIM DA TELA DE LOGIN
 

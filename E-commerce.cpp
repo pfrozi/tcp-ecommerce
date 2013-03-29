@@ -1904,7 +1904,7 @@ void menuGERENTE(char nome[], int cadastro)
             mudaCor(Colors_GREEN);
             fflush(stdin);
             scanf("%c", &opcaoMenuGerente);
-            resposta=toupper(opcaoMenuGerente);
+            respostaMenuGerente=toupper(opcaoMenuGerente);
             mudaCor(Colors_WHITE);
             switch(opcaoMenuGerente)
             {

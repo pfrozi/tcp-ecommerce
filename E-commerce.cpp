@@ -1479,38 +1479,38 @@ void fechaCompra(int cadastro)
 
 int contaComprasSuspensas()
 {
-     FILE *arq;
-     int contador, i, totalCarrinhosAbertos, carrinhosAbertos[MAX_USUARIOS], codigo;
-     char cadastroEmChar[MAX_DIGITOS], string[MAX_LINHA];
+    FILE *arq;
+    int contador, i, totalCarrinhosAbertos, carrinhosAbertos[MAX_USUARIOS], codigo;
+    char cadastroEmChar[MAX_DIGITOS], linha[MAX_LINHA];
 
-     arq=fopen("usuarios.txt", "r");
-     if(!arq)
-     {
-             mudaCor(Colors_RED);printf("Houve um problema ao abrir o arquivo, o programa será encerrado.");
-             fflush(stdin);getch();exit(1);
-     }
-     contador=0;
-     while(!feof(arq))
-     {
-        fgets(string, MAX_LINHA, arq);
-        if(string[0]!='\n')
-           contador++;
-     }
-     fclose(arq);
-     //contador verifica quantos usuarios ha cadastrados
-     totalCarrinhosAbertos=0;
-     for(i=1; i<=contador; i++)
-     {
-              itoa(i, cadastroEmChar, 10);
-              arq=fopen(cadastroEmChar, "rb");
-              if(arq)
-              {
-                     carrinhosAbertos[totalCarrinhosAbertos]=i;
-                     totalCarrinhosAbertos++;
-                     fclose(arq);
-              }
-     }
-     return(totalCarrinhosAbertos);
+    arq=fopen("usuarios.txt", "r");
+    if(!arq)
+    {
+        mudaCor(Colors_RED);printf("Houve um problema ao abrir o arquivo, o programa será encerrado.");
+        fflush(stdin);getch();exit(1);
+    }
+    contador=0;
+    while(!feof(arq))
+    {
+        fgets(linha, MAX_LINHA, arq);
+        if(linha[0]!='\n')
+            contador++;
+    }
+    fclose(arq);
+    //contador verifica quantos usuarios ha cadastrados
+    totalCarrinhosAbertos=0;
+    for(i=1; i<=contador; i++)
+    {
+        itoa(i, cadastroEmChar, 10);
+        arq=fopen(cadastroEmChar, "rb");
+        if(arq)
+        {
+            carrinhosAbertos[totalCarrinhosAbertos]=i;
+            totalCarrinhosAbertos++;
+            fclose(arq);
+        }
+    }
+    return(totalCarrinhosAbertos);
 }
 
 void menuCLIENTE(char nome[], int cadastro)

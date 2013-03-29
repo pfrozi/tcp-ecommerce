@@ -1480,7 +1480,7 @@ void FechaCompra(int cadastro)
 int contaComprasSuspensas()
 {
     FILE *arq;
-    int contador, i, totalCarrinhosAbertos, carrinhosAbertos[MAX_USUARIOS], codigo;
+    int contador, i, totalCarrinhosAbertos, listaCarrinhosAbertos[MAX_USUARIOS], codigo;
     char cadastroEmChar[MAX_DIGITOS], linha[MAX_LINHA];
 
     arq=fopen("usuarios.txt", "r");
@@ -1505,7 +1505,7 @@ int contaComprasSuspensas()
         arq=fopen(cadastroEmChar, "rb");
         if(arq)
         {
-            carrinhosAbertos[totalCarrinhosAbertos]=i;
+            listaCarrinhosAbertos[totalCarrinhosAbertos]=i;
             totalCarrinhosAbertos++;
             fclose(arq);
         }
@@ -1513,11 +1513,12 @@ int contaComprasSuspensas()
     return(totalCarrinhosAbertos);
 }
 
-void menuCLIENTE(char nome[], int cadastro)
+void MenuCliente(char nome[], int cadastro)
 {
     FILE *arq;
-    char resposta, cadastroEmCar[MAX_DIGITOS];
-    int respostaalg=0, comprasSuspensas;
+    char resposta, cadastroEmChar[MAX_DIGITOS];
+    int comprasSuspensas;
+    bool opcaoValida,continua=true;
     do
     {
             system("cls");
@@ -1545,95 +1546,90 @@ void menuCLIENTE(char nome[], int cadastro)
                 mudaCor(Colors_GREEN);fflush(stdin);scanf("%c", &resposta);
                 resposta=toupper(resposta);
                 mudaCor(Colors_WHITE);
+                opcaoValida=true;
                 switch(resposta)
                 {
                     case 'T':
                     {
-                         itoa(cadastro, cadastroEmCar, 10);
-                         arq=fopen(cadastroEmCar, "rb");
-                         if(arq)                        //checa se o usuario tem comopras para suspender
-                         {
-                             comprasSuspensas=contaComprasSuspensas();
-                             if(comprasSuspensas<MAX_COMPRAS_SUSP)
-                             {
-                                   printf("\nSuas compras ficarao suspensas. Voce podera finaliza-las mais tarde.");
-                                   fflush(stdin);getch();
-                                   respostaalg=10;
-                             }
-                             else
-                             {
-                                 mudaCor(Colors_RED);printf("\nO numero maximo de compras suspensas simultaneas");
-                                 printf("\nfoi atingido. Voce tera que fechar suas compras ou cancela-las.");
-                                 mudaCor(Colors_WHITE);
-                                 respostaalg=1;
-                             }
-                             fclose(arq);
-                         }
-                         else
-                             respostaalg=10;
-                         break;
+                        itoa(cadastro, cadastroEmChar, 10);
+                        arq=fopen(cadastroEmChar, "rb");
+                        if(arq)                        //checa se o usuario tem comopras para suspender
+                        {
+                            comprasSuspensas=contaComprasSuspensas();
+                            if(comprasSuspensas<MAX_COMPRAS_SUSP)
+                            {
+                                printf("\nSuas compras ficarao suspensas. Voce podera finaliza-las mais tarde.");
+                                fflush(stdin);getch();
+                                continua=false;
+                            }
+                            else
+                            {
+                                mudaCor(Colors_RED);printf("\nO numero maximo de compras suspensas simultaneas");
+                                printf("\nfoi atingido. Voce tera que fechar suas compras ou cancela-las.");
+                                mudaCor(Colors_WHITE);
+                                continua=true;
+                            }
+                            fclose(arq);
+                        }
+                        else
+                            continua=false;
+                        break;
                     }
                     case 'S':
                     {
-                         printf("\nSuas compras serao canceladas antes de voce fazer logout.");
-                         fflush(stdin);getch();
-                         CancelaTodasCompras(cadastro);
-                         respostaalg=10;
-                         break;
+                        printf("\nSuas compras serao canceladas antes de voce fazer logout.");
+                        fflush(stdin);getch();
+                        cancelaTodasCompras(cadastro);
+                        continua=false;
+                        break;
                     }
                     case 'O':
                     {
-                         printf("\nSuas compras serao finalizadas antes de voce fazer logout.");
-                         fflush(stdin);getch();
-                         FechaCompra(cadastro);
-                         respostaalg=10;
-                         break;
+                        printf("\nSuas compras serao finalizadas antes de voce fazer logout.");
+                        fflush(stdin);getch();
+                        fechaCompra(cadastro);
+                        continua=false;
+                        break;
                     }
                     case 'P':
                     {
-                         Pesquisar();
-                         respostaalg=1;
-                         break;
+                        pesquisar();
+                        break;
                     }
                     case 'I':
                     {
-                         inserirProdutoCarrinho(cadastro);
-                         respostaalg=1;
-                         break;
+                        inserirProdutoCarrinho(cadastro);
+                        break;
                     }
                     case 'E':
                     {
-                         ExcluiUmProduto(cadastro);
-                         respostaalg=1;
-                         break;
+                        excluiUmProduto(cadastro);
+                        break;
                     }
                     case 'V':
                     {
-                         VisualizaCompras(cadastro);
-                         respostaalg=1;
-                         break;
+                        vizualizacompras(cadastro);
+                        break;
                     }
                     case 'F':
                     {
-                         FechaCompra(cadastro);
-                         respostaalg=1;
-                         break;
+                        fechaCompra(cadastro);
+                        break;
                     }
                     case 'C':
                     {
-                         CancelaTodasCompras(cadastro);
-                         respostaalg=1;
-                         break;
+                        cancelaTodasCompras(cadastro);
+                        break;
                     }
                     default:
                     {
-                       mudaCor(Colors_RED);
-                       printf("Opcao invalida. Por favor digite uma opcao valida: ");
-                       respostaalg=0;
+                      mudaCor(Colors_RED);
+                      printf("Opcao invalida. Por favor digite uma opcao valida: ");
+                      opcaoValida=false;
                     }
                 }
-             }while(respostaalg==0);
-    }while(respostaalg!=10);
+            }while(!opcaoValida);
+    }while(continua);
 }
 
 //funções de relatorios de gerentes
@@ -1642,7 +1638,7 @@ void relatorioComprasEmAndamento()
 {
      FILE *arq;
      int contador, i, totalCarrinhosAbertos, carrinhosAbertos[MAX_USUARIOS], codigo;
-     char cadastroEmChar[MAX_DIGITOS], string[MAX_LINHA];
+     char cadastroEmChar[MAX_DIGITOS], linha[MAX_LINHA];
 
      system("cls");
      mudaCor(Colors_YELLOW);printf("\nUSUARIOS COM CARRINHOS ABERTOS:");
@@ -1650,14 +1646,14 @@ void relatorioComprasEmAndamento()
      arq=fopen("usuarios.txt", "r");
      if(!arq)
      {
-             mudaCor(Colors_RED);printf("Houve um problema ao abrir o arquivo, o programa será encerrado.");
-             fflush(stdin);getch();exit(1);
+            mudaCor(Colors_RED);printf("Houve um problema ao abrir o arquivo, o programa será encerrado.");
+            fflush(stdin);getch();exit(1);
      }
      contador=0;
      while(!feof(arq))
      {
-        fgets(string, MAX_LINHA, arq);
-        if(string[0]!='\n')
+        fgets(linha, MAX_LINHA, arq);
+        if(linha[0]!='\n')
            contador++;
      }
      fclose(arq);
@@ -1665,61 +1661,62 @@ void relatorioComprasEmAndamento()
      totalCarrinhosAbertos=0;
      for(i=1; i<=contador; i++)
      {
-              itoa(i, cadastroEmChar, 10);
-              arq=fopen(cadastroEmChar, "rb");
-              if(arq)
-              {
-                     carrinhosAbertos[totalCarrinhosAbertos]=i;
-                     totalCarrinhosAbertos++;
-                     fclose(arq);
-              }
+            itoa(i, cadastroEmChar, 10);
+            arq=fopen(cadastroEmChar, "rb");
+            if(arq)
+            {
+                carrinhosAbertos[totalCarrinhosAbertos]=i;
+                totalCarrinhosAbertos++;
+                fclose(arq);
+            }
      }
 
      if(totalCarrinhosAbertos!=0)
      {
-             printf("\nTotal de usuarios com carrinhos abertos: ");mudaCor(Colors_GREEN);printf("%d", totalCarrinhosAbertos);
-             mudaCor(Colors_WHITE);printf("\nUsuarios com carrinhos abertos:");
-             arq=fopen("usuarios.txt", "r");
-             if(!arq)
-             {
-                     mudaCor(Colors_RED);printf("\nHouve um problema ao abrir o arquivo, o programa será encerrado.");
-                     fflush(stdin);getch();exit(1);
-             }
+            printf("\nTotal de usuarios com carrinhos abertos: ");mudaCor(Colors_GREEN);printf("%d", totalCarrinhosAbertos);
+            mudaCor(Colors_WHITE);printf("\nUsuarios com carrinhos abertos:");
+            arq=fopen("usuarios.txt", "r");
+            if(!arq)
+            {
+                mudaCor(Colors_RED);printf("\nHouve um problema ao abrir o arquivo, o programa será encerrado.");
+                fflush(stdin);getch();exit(1);
+            }
              for(i=0; i<totalCarrinhosAbertos; i++)
              {
-                           rewind(arq);
-                           while(!feof(arq))
-                           {
-                                fgets(string, MAX_LINHA, arq);
-                                codigo=atoi(strtok(string, ","));
-                                if(codigo==carrinhosAbertos[i])
-                                {
-                                     mudaCor(Colors_WHITE);
-                                     printf("\n===========================================");
-                                     printf("\nCodigo: ");mudaCor(Colors_GREEN);printf("%d", codigo);
-                                     mudaCor(Colors_WHITE);
-                                     printf("\nNome: ");mudaCor(Colors_GREEN);printf("%s", strtok(NULL, ","));
-                                     mudaCor(Colors_WHITE);
-                                     printf("\nTipo: ");mudaCor(Colors_GREEN);printf("%s", strtok(NULL, "\n"));
-                                }
-                           }
-             }
-             fflush(stdin);getch();
-     }
-     else
-     {
-          printf("\nNao ha nenhum cliente com o carrinho de compras aberto.");
-          fflush(stdin);getch();
-     }
+                rewind(arq);
+                while(!feof(arq))
+                {
+                    fgets(string, MAX_LINHA, arq);
+                    codigo=atoi(strtok(string, ","));
+                    if(codigo==carrinhosAbertos[i])
+                    {
+                        mudaCor(Colors_WHITE);
+                        printf("\n===========================================");
+                        printf("\nCodigo: ");mudaCor(Colors_GREEN);printf("%d", codigo);
+                        mudaCor(Colors_WHITE);
+                        printf("\nNome: ");mudaCor(Colors_GREEN);printf("%s", strtok(NULL, ","));
+                        mudaCor(Colors_WHITE);
+                        printf("\nTipo: ");mudaCor(Colors_GREEN);printf("%s", strtok(NULL, "\n"));
+                    }
+                }
+            }
+            fflush(stdin);getch();
+    }
+    else
+    {
+        printf("\nNao ha nenhum cliente com o carrinho de compras aberto.");
+        fflush(stdin);getch();
+    }
 }
 
 void vendas()
 {
      FILE *arq;
-     char dia[MAX_DIGITOS], mes[MAX_DIGITOS], ano[MAX_DIGITOS], string[MAX_LINHA];
+     char dia[MAX_DIGITOS], mes[MAX_DIGITOS], ano[MAX_DIGITOS], linha[MAX_LINHA];
      char comp[MAX_LINHA];
-     int confirmacao, vendasEletro=0, vendasVestuario=0, encontrou=0;
-     float totalVendas=0;
+     int confirmacao, vendasEletro=0, vendasVestuario=0;
+     bool  encontrou=false;
+     float valorTotalVendas=0;
 
      system("cls");
      mudaCor(Colors_YELLOW);printf("\nVENDAS POR TIPO:");
@@ -1733,11 +1730,11 @@ void vendas()
      {
              while(!feof(arq))
              {
-                 fgets(string, MAX_LINHA, arq);
-                 if(string[0]!='\n')
+                 fgets(linha, MAX_LINHA, arq);
+                 if(linha[0]!='\n')
                  {
                      confirmacao=0;
-                     strcpy(comp, strtok(string, ","));
+                     strcpy(comp, strtok(linha, ","));
                      if(strcmp(dia, comp)==0)
                      {
                         confirmacao++;
@@ -1756,8 +1753,8 @@ void vendas()
                      {
                          vendasEletro+=atoi(strtok(NULL, ","));
                          vendasVestuario+=atoi(strtok(NULL, ","));
-                         totalVendas+=atof(strtok(NULL, "\n"));
-                         encontrou=1;
+                         valorTotalVendas+=atof(strtok(NULL, "\n"));
+                         encontrou=true;
                      }
                  }
              }
@@ -1770,7 +1767,7 @@ void vendas()
                  printf("\nNumero de eletrodomesticos vendidos: ");mudaCor(Colors_GREEN);printf("%d", vendasEletro);
                  mudaCor(Colors_WHITE);printf("\nNumero de pecas de vestuario vendidas: ");
                  mudaCor(Colors_GREEN);printf("%d", vendasVestuario);mudaCor(Colors_WHITE);
-                 printf("\nTotal de vendas: R$ ");mudaCor(Colors_GREEN);printf("%.2f", totalVendas);
+                 printf("\nTotal de vendas: R$ ");mudaCor(Colors_GREEN);printf("%.2f", valorTotalVendas);
                  fflush(stdin);getch();
              }
              else
@@ -1789,7 +1786,7 @@ void vendas()
 void verificaEstoque()
 {
      FILE *arq;
-     char string[MAX_LINHA];
+     char linha[MAX_LINHA];
 
      //imprime eletro
      system("cls");
@@ -1799,10 +1796,10 @@ void verificaEstoque()
      mudaCor(Colors_YELLOW);printf("\nEletrodomesticos:");
      while(!feof(arq))
      {
-         fgets(string, sizeof(string), arq);
+         fgets(linha, sizeof(linha), arq);
          mudaCor(Colors_WHITE);printf("\n====================================================");
          printf("\nCodigo do produto: ");
-         mudaCor(Colors_GREEN);printf("%s", strtok(string,","));
+         mudaCor(Colors_GREEN);printf("%s", strtok(linha,","));
          mudaCor(Colors_WHITE);printf("\nDescricao do produto: ");
          mudaCor(Colors_GREEN);printf("%s", strtok(NULL,","));
          mudaCor(Colors_WHITE);printf("\nAltura: ");
@@ -1828,10 +1825,10 @@ void verificaEstoque()
      mudaCor(Colors_YELLOW);printf("\nVestuario:");
      while(!feof(arq))
      {
-         fgets(string, sizeof(string), arq);
+         fgets(linha, sizeof(linha), arq);
          mudaCor(Colors_WHITE);printf("\n====================================================");
          printf("\nCodigo do produto: ");
-         mudaCor(Colors_GREEN);printf("%s", strtok(string,","));
+         mudaCor(Colors_GREEN);printf("%s", strtok(linha,","));
          mudaCor(Colors_WHITE);printf("\nDescricao do produto: ");
          mudaCor(Colors_GREEN);printf("%s", strtok(NULL,","));
          mudaCor(Colors_WHITE);printf("\nTamanho: ");

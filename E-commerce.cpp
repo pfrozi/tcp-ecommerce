@@ -282,7 +282,7 @@ void novoUsuario()
 }
 //FIM DA FUNÇÃO PARA CRIAR NOVO USUARIO
 
-void inserirProdutoCarrinho(int cadastro)
+void insereProdutoCarrinho(int cadastro)
 {
      FILE *arq, *arq2;
      ELETRO eletronico;
@@ -650,7 +650,7 @@ void ImprimeEletro(ELETRO produtoEletro)
      printf("\n================================================================");
 }
 
-void Pesquisar ()
+void pesquisaProduto()
 {
     FILE *arq;
     char opcao, resposta;
@@ -1052,7 +1052,7 @@ void VisualizaCompras(int cadastro)
 //fim da funcao que mostra as compras
 
 //funcao cancela a compra e repoe o estoqueitem a item
-void CancelaTodasCompras(int cadastro)
+void cancelaTodasCompras(int cadastro)
 {
      FILE *arq, *arqtxt;
      char cadastroEmChar[MAX_DIGITOS], salvaLinha[MAX_PRODUTOS][MAX_LINHA], stringTemp[MAX_LINHA];
@@ -1185,7 +1185,7 @@ void CancelaTodasCompras(int cadastro)
 }
 //fim da funcao de cancelamento de pedido
 
-void ExcluiUmProduto(int cadastro)
+void excluiProdutoCarrinho(int cadastro)
 {
 
      FILE *arq, *arqtxt;
@@ -1513,7 +1513,7 @@ int contaComprasSuspensas()
     return(totalCarrinhosAbertos);
 }
 
-void MenuCliente(char nome[], int cadastro)
+void menuCliente(char nome[], int cadastro)
 {
     FILE *arq;
     char resposta, cadastroEmChar[MAX_DIGITOS];
@@ -1593,22 +1593,22 @@ void MenuCliente(char nome[], int cadastro)
                     }
                     case 'P':
                     {
-                        pesquisar();
+                        pesquisaProduto();
                         break;
                     }
                     case 'I':
                     {
-                        inserirProdutoCarrinho(cadastro);
+                        insereProdutoCarrinho(cadastro);
                         break;
                     }
                     case 'E':
                     {
-                        excluiUmProduto(cadastro);
+                        excluiProdutoCarrinho(cadastro);
                         break;
                     }
                     case 'V':
                     {
-                        vizualizacompras(cadastro);
+                        visualizaCompras(cadastro);
                         break;
                     }
                     case 'F':
@@ -1874,7 +1874,7 @@ void clientesCadastrados()
       fflush(stdin);getch();
 }
 
-void menuGERENTE(char nome[], int cadastro)
+void menuGerente(char nome[], int cadastro)
 {
     char opcaoMenuGerente;               //resposta caracter informada pelo usuario
     int respostaMenuGerente=0;           //resposta devolvida pela funcao
@@ -1911,7 +1911,7 @@ void menuGERENTE(char nome[], int cadastro)
                 }
                 case 'P':
                 {
-                     Pesquisar();
+                     pesquisaProduto();
                      respostaMenuGerente=1;
                      break;
                 }
@@ -1993,9 +1993,9 @@ void telaLogin()
             {
                 verificaEntreClienteGerente=strcmp("gerente", tipoCliente);
                 if(verificaEntreClienteGerente==0)
-                   menuGERENTE(nomeCliente, codCadastro);
+                   menuGerente(nomeCliente, codCadastro);
                 else
-                   menuCLIENTE(nomeCliente, codCadastro);
+                   menuCliente(nomeCliente, codCadastro);
             }
             else
             {

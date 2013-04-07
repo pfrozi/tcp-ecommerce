@@ -1,4 +1,4 @@
-#include <Conio2.h>
+#include <conio2.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -632,7 +632,7 @@ void insereProdutoCarrinho(int cadastro)
 
 
 //funcao usadas pela funcao pesquisa
-void ImprimeVestuario(VESTUARIO produtoVestuario)
+void imprimeVestuario(VESTUARIO produtoVestuario)
 {
     mudaCor(Colors_WHITE);
     printf("\nCodigo: %d  Descricao: %s\n",produtoVestuario.codigo, produtoVestuario.descricao);
@@ -641,7 +641,7 @@ void ImprimeVestuario(VESTUARIO produtoVestuario)
     printf("\n================================================================");
 }
 //funcao usadas pela funcao pesquisa
-void ImprimeEletro(ELETRO produtoEletro)
+void imprimeEletro(ELETRO produtoEletro)
 {
      mudaCor(Colors_WHITE);
      printf("\nCodigo: %d  Descricao: %s\n",produtoEletro.codigo, produtoEletro.descricao);
@@ -774,7 +774,7 @@ void pesquisaProduto()
 
                              if(opcao == 'D' && (strcmp(objeto,produtoEletro.descricao) == 0))
                              {
-                                 ImprimeEletro(produtoEletro);
+                                 imprimeEletro(produtoEletro);
                                  encontrados[i] = produtoEletro.codigo;
                                  i++;
                                  produtosEncontrados++;
@@ -782,7 +782,7 @@ void pesquisaProduto()
                              else
                                  if(opcao == 'C' && (strcmp(objeto,produtoEletro.cor) == 0))
                                  {
-                                     ImprimeEletro(produtoEletro);
+                                     imprimeEletro(produtoEletro);
                                      encontrados[i] = produtoEletro.codigo;
                                      i++;
                                      produtosEncontrados++;
@@ -790,7 +790,7 @@ void pesquisaProduto()
                                  else
                                      if(opcao == 'P' && produtoEletro.preco <= precoMax && produtoEletro.preco >= precoMin)
                                      {
-                                         ImprimeEletro(produtoEletro);
+                                         imprimeEletro(produtoEletro);
                                          encontrados[i] = produtoEletro.codigo;
                                          i++;
                                          produtosEncontrados++;
@@ -937,7 +937,7 @@ void pesquisaProduto()
                                   if(strcmp(objeto,produtoVestuario.descricao)==0 || strcmp(objeto,produtoVestuario.tamanho)==0 ||
                                   strcmp(objeto,produtoVestuario.cor)==0 || strcmp(objeto,produtoVestuario.genero)==0)
                                   {
-                                     ImprimeVestuario(produtoVestuario);
+                                     imprimeVestuario(produtoVestuario);
                                      encontrados[i] = produtoEletro.codigo;
                                      i++;
                                      produtosEncontrados++;
@@ -945,7 +945,7 @@ void pesquisaProduto()
                                   else
                                   if(opcao == 'P' && produtoVestuario.preco <= precoMax && produtoVestuario.preco >= precoMin)
                                   {
-                                     ImprimeVestuario(produtoVestuario);
+                                     imprimeVestuario(produtoVestuario);
                                      encontrados[i] = produtoEletro.codigo;
                                      i++;
                                      produtosEncontrados++;
@@ -999,7 +999,7 @@ void pesquisaProduto()
 }
 
 //mostra todas as compras do carrinho
-void VisualizaCompras(int cadastro)
+void visualizaCompras(int cadastro)
 {
      FILE *arq;
      CARRINHO carrinho;
@@ -1399,7 +1399,7 @@ void excluiProdutoCarrinho(int cadastro)
      }while(continuaExcluindo);
 }
 
-void FechaCompra(int cadastro)
+void fechaCompra(int cadastro)
 {
      FILE *arq, *arqtxt;
      CARRINHO carrinho;
@@ -1686,8 +1686,8 @@ void relatorioComprasEmAndamento()
                 rewind(arq);
                 while(!feof(arq))
                 {
-                    fgets(string, MAX_LINHA, arq);
-                    codigo=atoi(strtok(string, ","));
+                    fgets(linha, MAX_LINHA, arq);
+                    codigo=atoi(strtok(linha, ","));
                     if(codigo==carrinhosAbertos[i])
                     {
                         mudaCor(Colors_WHITE);

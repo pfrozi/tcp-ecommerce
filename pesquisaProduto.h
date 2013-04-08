@@ -5,6 +5,8 @@
 #include <conio2.h>
 #include "mudaCor.h"
 
+#define TAM_NOME_MAX 60
+
 typedef struct
 {
         int codigo;

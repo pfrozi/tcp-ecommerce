@@ -1,0 +1,74 @@
+# depslib dependency file v1.0
+1365393359 source:c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\main.cpp
+	"global.h"
+	<time.h>
+	"mudaCor.h"
+	"telaInicial.h"
+	"telaLogin.h"
+	"novoUsuario.h"
+	"showInfo.h"
+
+1365393362 c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\mudacor.h
+	<conio2.h>
+
+1365392653 c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\telainicial.h
+	"global.h"
+	"mudaCor.h"
+
+1365392039 c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\telalogin.h
+	"global.h"
+	"menuGerente.h"
+	"menuCliente.h"
+
+1365392038 c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\menugerente.h
+	"global.h"
+	"mudaCor.h"
+	"pesquisaProduto.h"
+
+1365393155 c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\pesquisaproduto.h
+	"global.h"
+	"mudaCor.h"
+
+1365391908 c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\menucliente.h
+	"mudaCor.h"
+	"pesquisaProduto.h"
+	"global.h"
+
+1365392400 c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\novousuario.h
+	"global.h"
+	"mudaCor.h"
+
+1365392643 c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\showinfo.h
+	"global.h"
+	"mudaCor.h"
+
+1365392847 source:c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\menucliente.cpp
+	"menuCliente.h"
+
+1365392912 c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\global.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+
+1365382717 source:c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\menugerente.cpp
+	"menuGerente.h"
+
+1365393361 source:c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\mudacor.cpp
+	"mudaCor.h"
+
+1365382718 source:c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\novousuario.cpp
+	"novoUsuario.h"
+
+1365394249 source:c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\pesquisaproduto.cpp
+	"pesquisaProduto.h"
+
+1365382718 source:c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\showinfo.cpp
+	"showInfo.h"
+
+1365382717 source:c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\telainicial.cpp
+	"telaInicial.h"
+
+1365386508 source:c:\users\pfrozi\documents\ufrgs\técnicas de construção de programas(inf01120)\trabalhopratico\tcp-ecommerce\projeto\e-commerce2\telalogin.cpp
+	"telaLogin.h"
+

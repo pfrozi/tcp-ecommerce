@@ -4,19 +4,22 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+
+#include "mudaCor.h"
+
 #define MAX_USUARIOS 100
-#define MAX_PRODUTOS 50
-#define TAM_NOME_MAX 60
-#define MAX_LINHA 256
-#define MAX_DIGITOS 10
-#define MAX_CAR 20
+
+
+
+
+
 #define DIAS_UTEIS 7
 #define MAX_COMPRAS_SUSP 50
 
 int main()
 {
     FILE *arq;
-    int cadastro, opcaoinicial, opcaologin;
+    int opcaoinicial;
     mudaCor(Colors_WHITE);
 
     //cria o arquivo usuarios.txt caso ele nao existir

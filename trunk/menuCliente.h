@@ -6,29 +6,10 @@
 #include "mudaCor.h"
 #include "pesquisaProduto.h"
 
-
-typedef struct
-{
-        int codigo;
-        char descricao[TAM_NOME_MAX];
-        int altura;
-        int largura;
-        int profundidade;
-        float preco;
-        int estoque;
-        char cor[TAM_NOME_MAX];
-}ELETRO;
-
-typedef struct
-{
-        int codigo;
-        char descricao[TAM_NOME_MAX];
-        char tamanho[TAM_NOME_MAX];
-        float preco;
-        int estoque;
-        char cor[TAM_NOME_MAX];
-        char genero[TAM_NOME_MAX];
-}VESTUARIO;
+#define MAX_CAR 20
+#define MAX_DIGITOS 10
+#define MAX_PRODUTOS 50
+#define MAX_LINHA 256
 
 typedef struct
 {

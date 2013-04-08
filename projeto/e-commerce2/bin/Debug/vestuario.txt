@@ -1,0 +1,6 @@
+9,bolero,PP,59.9,50,preto,feminino
+10,vestido,M,89.9,10,roxo,feminino
+11,blusa,XG,54.98,15,vermelho,feminino
+12,camisa polo listrada,G,49.50,20,azul,masculino
+13,calça,G,99.9,40,branca,masculino
+14,regata manga paetê,P,59.9,25,cinza,unissex

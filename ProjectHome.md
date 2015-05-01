@@ -1,0 +1,3 @@
+Programa desenvoldido para a disciplina de Técnica de Construção de Programas [INF01120](INF01120.md), os alunos farão o 'refactoring' do código desde sua primeira versão, pondo em prática os conceitos aprendidos na aula.
+
+O programa gera um arquivo 'report.txt' que controla as vendas e suas respectivas datas, ele necessita dos arquivos 'eletro.txt', 'vestuario.txt' e 'usuarios.txt' para controlar os estoques e cadastros
